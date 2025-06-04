@@ -1,4 +1,4 @@
-﻿using Engine.Rendering.Shaders;
+using Engine.Rendering.Shaders;
 using Raylib_cs;
 
 namespace Engine.Rendering.RaylibBackend.Shaders;

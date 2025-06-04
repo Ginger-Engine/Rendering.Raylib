@@ -1,4 +1,4 @@
-﻿using Engine.Core.Serialization;
+using Engine.Core.Serialization;
 using Engine.Rendering.Textures;
 using Raylib_cs;
 

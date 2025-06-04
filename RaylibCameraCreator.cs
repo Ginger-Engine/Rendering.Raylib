@@ -1,4 +1,4 @@
-﻿using Engine.Rendering.Cameras;
+using Engine.Rendering.Cameras;
 
 namespace Engine.Rendering.RaylibBackend;
 
