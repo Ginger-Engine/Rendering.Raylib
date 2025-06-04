@@ -1,8 +1,7 @@
 ﻿using Engine.Rendering.Textures;
+using Raylib_cs;
 
 namespace Engine.Rendering.RaylibBackend;
-
-using Raylib_cs;
 
 public class RaylibTexture : ITexture
 {
