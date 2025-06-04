@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Engine.Rendering.Textures;
 using Raylib_cs;
 

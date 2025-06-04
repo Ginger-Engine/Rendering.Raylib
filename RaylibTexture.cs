@@ -1,4 +1,4 @@
-﻿using Engine.Rendering.Textures;
+using Engine.Rendering.Textures;
 using Raylib_cs;
 
 namespace Engine.Rendering.RaylibBackend;

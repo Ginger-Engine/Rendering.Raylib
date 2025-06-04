@@ -1,4 +1,4 @@
-﻿using Engine.Core;
+using Engine.Core;
 using Engine.Core.Di;
 using Engine.Rendering.Cameras;
 using Engine.Rendering.Materials;
