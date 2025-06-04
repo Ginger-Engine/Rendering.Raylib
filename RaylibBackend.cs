@@ -36,5 +36,6 @@ public class RaylibBackend : IRenderBackend
     }
     public void Shutdown()
     {
+        Raylib.CloseWindow();
     }
 }
