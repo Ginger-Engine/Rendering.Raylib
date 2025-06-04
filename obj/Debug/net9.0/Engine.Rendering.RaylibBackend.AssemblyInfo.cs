@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Engine.Rendering.RaylibBackend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d0bd9e145ab92cfd722cd2e4831c35a05801818f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Engine.Rendering.RaylibBackend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Engine.Rendering.RaylibBackend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
