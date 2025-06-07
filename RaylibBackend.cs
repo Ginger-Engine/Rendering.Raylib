@@ -23,10 +23,11 @@ public class RaylibBackend : IRenderBackend
         Raylib.ClearBackground(Color.SkyBlue);
     }
 
-    public void DrawTexture(ITexture texture, Vector2 position)
+    public void DrawTexture(ITexture texture, Vector2 position, float rotation, Vector2 scale)
     {
-        if (texture is RaylibTexture texture2D) Raylib.DrawTexture(texture2D.Raw, (int)position.X, (int)position.Y, Color.Beige);
+        if (texture is RaylibTexture texture2D) Raylib.DrawTextureEx(texture2D.Raw, position, rotation, scale.X, Color.Beige);
         else throw new Exception("texture is not a RaylibTexture");
+        Console.WriteLine($"{position}, {rotation}, {scale}");
     }
 
     public void SetCamera(ICamera? camera)
