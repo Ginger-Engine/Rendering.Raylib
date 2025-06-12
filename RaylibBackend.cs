@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Engine.Rendering.Cameras;
 using Engine.Rendering.Textures;
+using Engine.Rendering.Ui;
 using Raylib_cs;
 
 namespace Engine.Rendering.RaylibBackend;
@@ -60,5 +61,33 @@ public class RaylibBackend : IRenderBackend
     public void Shutdown()
     {
         Raylib.CloseWindow();
+    }
+    
+
+    public void DrawText(string text, Vector2 position, float rotation, Vector2 scale, float fontSize, System.Drawing.Color color, IFont? font = null)
+    {
+        Font raylibFontRaw;
+        if (font is not null)
+        {
+            if (font is not RaylibFont raylibFont) throw new Exception("font is not a RaylibFont");
+            raylibFontRaw = raylibFont.Font;
+        }
+        else
+        {
+            raylibFontRaw = Raylib.GetFontDefault();
+        }
+
+        fontSize = fontSize > 0 ? fontSize : raylibFontRaw.BaseSize;
+        Vector2 origin = Raylib.MeasureTextEx(raylibFontRaw, text, fontSize, 1) / 2;
+        Raylib.DrawTextPro(
+            raylibFontRaw,
+            text,
+            position,
+            origin,
+            rotation,
+            fontSize,
+            1f,
+            new Color(color.R / 255f, color.G / 255f, color.B / 255f, 1f) 
+        );
     }
 }
