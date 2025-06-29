@@ -28,7 +28,6 @@ public class RaylibBackend : IRenderBackend
     {
         if (texture is RaylibTexture texture2D) Raylib.DrawTextureEx(texture2D.Raw, position, rotation, scale.X, Color.Beige);
         else throw new Exception("texture is not a RaylibTexture");
-        Console.WriteLine($"{position}, {rotation}, {scale}");
     }
 
     public void SetCamera(ICamera? camera)
