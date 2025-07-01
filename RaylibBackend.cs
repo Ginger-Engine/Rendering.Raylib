@@ -8,10 +8,6 @@ namespace Engine.Rendering.RaylibBackend;
 
 public class RaylibBackend : IRenderBackend
 {
-    public RaylibBackend()
-    {
-        Raylib.InitWindow(800, 600, "Raylib Backend");
-    }
     public void Init()
     {
     }

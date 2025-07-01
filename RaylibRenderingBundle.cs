@@ -5,6 +5,7 @@ using Engine.Rendering.RaylibBackend.Shaders;
 using Engine.Rendering.Shaders;
 using Engine.Rendering.Textures;
 using Engine.Rendering.Ui;
+using Engine.Rendering.Windows;
 using GignerEngine.DiContainer;
 
 namespace Engine.Rendering.RaylibBackend;
@@ -19,5 +20,6 @@ public class RaylibRenderingBundle : IBundle
         builder.Bind<IResourceLoader<ITexture>>().From<RaylibTextureLoader>();
         builder.Bind<ICameraCreator>().From<RaylibCameraCreator>();
         builder.Bind<IFontManager>().From<FontManager>();
+        builder.Bind<IWindow>().From<RaylibWindow>();
     }
 }
