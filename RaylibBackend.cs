@@ -47,6 +47,16 @@ public class RaylibBackend : IRenderBackend
         }
     }
 
+    public void DrawLine(Vector2 from, Vector2 to, System.Drawing.Color color, float thickness = 1)
+    {
+        Raylib.DrawLineEx(
+            from,
+            to,
+            thickness,
+            new Color(color.R, color.G, color.B, color.A)
+        );
+    }
+
     public void Render() {}
 
     public void End()
