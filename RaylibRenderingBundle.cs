@@ -1,6 +1,7 @@
 ﻿using Engine.Core;
 using Engine.Rendering.Cameras;
 using Engine.Rendering.Materials;
+using Engine.Rendering.RaylibBackend.Drawables;
 using Engine.Rendering.RaylibBackend.Shaders;
 using Engine.Rendering.Shaders;
 using Engine.Rendering.Textures;
@@ -21,5 +22,10 @@ public class RaylibRenderingBundle : IBundle
         builder.Bind<ICameraCreator>().From<RaylibCameraCreator>();
         builder.Bind<IFontManager>().From<FontManager>();
         builder.Bind<IWindow>().From<RaylibWindow>();
+
+        builder.Bind<LineDrawer>();
+        builder.Bind<RectangleDrawer>();
+        builder.Bind<TextDrawer>();
+        builder.Bind<TextureDrawer>();
     }
 }

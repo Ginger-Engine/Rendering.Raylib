@@ -1,13 +1,15 @@
 ﻿using System.Numerics;
 using Engine.Rendering.Cameras;
+using Engine.Rendering.Drawables;
 using Engine.Rendering.Textures;
 using Engine.Rendering.Ui;
 using Raylib_cs;
 
 namespace Engine.Rendering.RaylibBackend;
 
-public class RaylibBackend : IRenderBackend
+public class RaylibBackend(IEnumerable<IDrawer> drawers) : IRenderBackend
 {
+    private readonly Dictionary<Type, IDrawer> _drawers = drawers.ToDictionary(drawer => drawer.Type, drawer => drawer);
     public void Init()
     {
     }
@@ -20,12 +22,21 @@ public class RaylibBackend : IRenderBackend
         Raylib.ClearBackground(Color.SkyBlue);
     }
 
-    public void DrawTexture(ITexture texture, Vector2 position, float rotation, Vector2 scale)
+    public void Draw(IDrawable drawable)
     {
-        if (texture is RaylibTexture texture2D) Raylib.DrawTextureEx(texture2D.Raw, position, rotation, scale.X, Color.Beige);
-        else throw new Exception("texture is not a RaylibTexture");
+        _drawers[drawable.GetType()].Draw(drawable);
     }
 
+    public void DrawLine(Vector2 from, Vector2 to, System.Drawing.Color color, float thickness = 1)
+    {
+        Raylib.DrawLineEx(
+            from,
+            to,
+            thickness,
+            new Color(color.R, color.G, color.B, color.A)
+        );
+    }
+    
     public void SetCamera(ICamera? camera)
     {
         if (camera == null)
@@ -46,17 +57,6 @@ public class RaylibBackend : IRenderBackend
                 break;
         }
     }
-
-    public void DrawLine(Vector2 from, Vector2 to, System.Drawing.Color color, float thickness = 1)
-    {
-        Raylib.DrawLineEx(
-            from,
-            to,
-            thickness,
-            new Color(color.R, color.G, color.B, color.A)
-        );
-    }
-
     public void Render() {}
 
     public void End()
@@ -66,33 +66,5 @@ public class RaylibBackend : IRenderBackend
     public void Shutdown()
     {
         Raylib.CloseWindow();
-    }
-    
-
-    public void DrawText(string text, Vector2 position, float rotation, Vector2 scale, float fontSize, System.Drawing.Color color, IFont? font = null)
-    {
-        Font raylibFontRaw;
-        if (font is not null)
-        {
-            if (font is not RaylibFont raylibFont) throw new Exception("font is not a RaylibFont");
-            raylibFontRaw = raylibFont.Font;
-        }
-        else
-        {
-            raylibFontRaw = Raylib.GetFontDefault();
-        }
-
-        fontSize = fontSize > 0 ? fontSize : raylibFontRaw.BaseSize;
-        Vector2 origin = Raylib.MeasureTextEx(raylibFontRaw, text, fontSize, 1) / 2;
-        Raylib.DrawTextPro(
-            raylibFontRaw,
-            text,
-            position,
-            origin,
-            rotation,
-            fontSize,
-            1f,
-            new Color(color.R / 255f, color.G / 255f, color.B / 255f, 1f) 
-        );
     }
 }
