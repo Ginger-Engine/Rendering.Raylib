@@ -22,8 +22,8 @@ public class LabelRenderer : IEntityBehaviour
         InitRenderable(entity);
         UpdateRenderable(entity);
 
-        entity.SubscribeComponentChange<LabelComponent>((_, _) => UpdateRenderable(entity));
-        entity.SubscribeComponentChange<TransformComponent>((_, _) => UpdateRenderable(entity));
+        entity.SubscribeComponentChange<LabelComponent>(_ => UpdateRenderable(entity));
+        entity.SubscribeComponentChange<TransformComponent>(_ => UpdateRenderable(entity));
     }
 
     public void OnUpdate(Entity entity, float dt)
@@ -34,7 +34,7 @@ public class LabelRenderer : IEntityBehaviour
     private void InitRenderable(Entity entity)
     {
         var textComponent = entity.GetComponent<LabelComponent>();
-        var transform = entity.GetComponent<WorldTransformComponent>();
+        var transform = entity.GetComponent<TransformComponent>();
         var renderableComponent = entity.GetComponent<RenderableComponent>();
         
         var drawable = new TextDrawable
@@ -43,9 +43,9 @@ public class LabelRenderer : IEntityBehaviour
             Font = _fontManager.Get(textComponent.Font),
             FontSize = textComponent.FontSize,
             Color = textComponent.Color,
-            Position = transform.Position,
-            Rotation = transform.Rotation,
-            Scale = transform.Scale
+            Position = transform.WorldTransform.Position,
+            Rotation = transform.WorldTransform.Rotation,
+            Scale = transform.WorldTransform.Scale
         };
         
         renderableComponent.Renderable = new Renderable
@@ -61,7 +61,7 @@ public class LabelRenderer : IEntityBehaviour
     private void UpdateRenderable(Entity entity)
     {
         var textComponent = entity.GetComponent<LabelComponent>();
-        var transform = entity.GetComponent<WorldTransformComponent>();
+        var transform = entity.GetComponent<TransformComponent>();
 
         entity.Modify((ref RenderableComponent renderableComponent) =>
         {
@@ -70,9 +70,9 @@ public class LabelRenderer : IEntityBehaviour
             drawable.Font = _fontManager.Get(textComponent.Font);
             drawable.FontSize = textComponent.FontSize;
             drawable.Color = textComponent.Color;
-            drawable.Position = transform.Position;
-            drawable.Rotation = transform.Rotation;
-            drawable.Scale = transform.Scale;
+            drawable.Position = transform.WorldTransform.Position;
+            drawable.Rotation = transform.WorldTransform.Rotation;
+            drawable.Scale = transform.WorldTransform.Scale;
             renderableComponent.Renderable.Drawable = drawable;
         });
     }

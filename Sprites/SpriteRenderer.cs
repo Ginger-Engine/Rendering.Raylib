@@ -17,14 +17,25 @@ public class SpriteRenderer : IEntityBehaviour
     public void OnStart(Entity entity)
     {
         InitRenderable(entity);
-        UpdateRenderable(entity);
-        entity.SubscribeComponentChange<SpriteComponent>((value, oldValue) =>
+        entity.SubscribeComponentChange<SpriteComponent>(e =>
         {
-            UpdateRenderable(entity);
+            entity.Modify((ref RenderableComponent renderableComponent) =>
+            {
+                var drawable = (TextureDrawable)renderableComponent.Renderable.Drawable;
+                drawable.Texture = e.newValue.Texture;
+                renderableComponent.Renderable.Drawable = drawable;
+            });
         });
-        entity.SubscribeComponentChange<WorldTransformComponent>((value, oldValue) =>
+        entity.SubscribeComponentChange<TransformComponent>(e =>
         {
-            UpdateRenderable(entity);
+            entity.Modify((ref RenderableComponent renderableComponent) =>
+            {
+                var drawable = (TextureDrawable)renderableComponent.Renderable.Drawable;
+                drawable.Position = e.newValue.WorldTransform.Position;
+                drawable.Rotation = e.newValue.WorldTransform.Rotation;
+                drawable.Scale = e.newValue.WorldTransform.Scale;
+                renderableComponent.Renderable.Drawable = drawable;
+            });
         });
         
         _renderQueue.Add(entity.GetComponent<RenderableComponent>().Renderable);
@@ -34,31 +45,23 @@ public class SpriteRenderer : IEntityBehaviour
     {
     }
 
-    public void InitRenderable(Entity entity)
+    private static void InitRenderable(Entity entity)
     {
         var renderableComponent = entity.GetComponent<RenderableComponent>();
+        var transformComponent = entity.GetComponent<TransformComponent>();
+        var spriteComponent = entity.GetComponent<SpriteComponent>();
         renderableComponent.Renderable = new Renderable
         {
             Layer = renderableComponent.Layer,
             Entity = entity,
-            Drawable = new TextureDrawable(),
+            Drawable = new TextureDrawable
+            {
+                Texture = spriteComponent.Texture,
+                Position = transformComponent.WorldTransform.Position,
+                Rotation = transformComponent.WorldTransform.Rotation,
+                Scale = transformComponent.WorldTransform.Scale,
+            },
         };
         entity.ApplyComponent(renderableComponent);
-    }
-
-    public void UpdateRenderable(Entity entity)
-    {
-        var spriteComponent = entity.GetComponent<SpriteComponent>();
-        var transformComponent = entity.GetComponent<WorldTransformComponent>();
-
-        entity.Modify((ref RenderableComponent renderableComponent) =>
-        {
-            var drawable = (TextureDrawable)renderableComponent.Renderable.Drawable;
-            drawable.Texture = spriteComponent.Texture;
-            drawable.Position = transformComponent.Position;
-            drawable.Rotation = transformComponent.Rotation;
-            drawable.Scale = transformComponent.Scale;
-            renderableComponent.Renderable.Drawable = drawable;
-        });
     }
 }
