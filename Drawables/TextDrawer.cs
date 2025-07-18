@@ -48,7 +48,7 @@ public class TextDrawer : AbstractDrawer<TextDrawable>
             origin,
             drawable.Rotation,
             fontSize,
-            1f,
+            1,
             drawable.Color.ToRaylibColor()
         );
     }

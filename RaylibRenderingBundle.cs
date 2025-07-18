@@ -21,7 +21,7 @@ public class RaylibRenderingBundle : IBundle
         builder.Bind<IResourceLoader<ITexture>>().From<RaylibTextureLoader>();
         builder.Bind<ICameraCreator>().From<RaylibCameraCreator>();
         builder.Bind<IFontManager>().From<FontManager>();
-        builder.Bind<IWindow>().From<RaylibWindow>();
+        builder.Bind<IWindow>().From<RaylibWindow>().Eager();
 
         builder.Bind<LineDrawer>();
         builder.Bind<RectangleDrawer>();

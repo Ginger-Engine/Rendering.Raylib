@@ -12,6 +12,7 @@ public struct LabelComponent() : IComponent
     public int FontSize;
     public Color Color = Color.Black;
     public Vector2 Size;
+    // public SizeExpression Size;
     public TextHorizontalAlign HorizontalAlign = TextHorizontalAlign.Left;
     public TextVerticalAlign VerticalAlign = TextVerticalAlign.Middle;
 }
