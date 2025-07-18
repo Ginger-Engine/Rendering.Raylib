@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Numerics;
 using Engine.Core;
 using Engine.Rendering.RaylibBackend.Drawables;
 
@@ -11,8 +10,6 @@ public struct LabelComponent() : IComponent
     public string Font;
     public int FontSize;
     public Color Color = Color.Black;
-    public Vector2 Size;
-    // public SizeExpression Size;
     public TextHorizontalAlign HorizontalAlign = TextHorizontalAlign.Left;
     public TextVerticalAlign VerticalAlign = TextVerticalAlign.Middle;
 }
