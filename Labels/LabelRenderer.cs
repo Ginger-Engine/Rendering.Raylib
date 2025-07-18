@@ -45,7 +45,8 @@ public class LabelRenderer : IEntityBehaviour
             Color = textComponent.Color,
             Position = transform.WorldTransform.Position,
             Rotation = transform.WorldTransform.Rotation,
-            Scale = transform.WorldTransform.Scale
+            Scale = transform.WorldTransform.Scale,
+            Size = textComponent.Size,
         };
         
         renderableComponent.Renderable = new Renderable
@@ -73,6 +74,9 @@ public class LabelRenderer : IEntityBehaviour
             drawable.Position = transform.WorldTransform.Position;
             drawable.Rotation = transform.WorldTransform.Rotation;
             drawable.Scale = transform.WorldTransform.Scale;
+            drawable.Size = textComponent.Size;
+            drawable.HorizontalAlign = textComponent.HorizontalAlign;
+            drawable.VerticalAlign = textComponent.VerticalAlign;
             renderableComponent.Renderable.Drawable = drawable;
         });
     }

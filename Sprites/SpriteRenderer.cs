@@ -1,4 +1,5 @@
-﻿using Engine.Core.Behaviours;
+﻿using System.Numerics;
+using Engine.Core.Behaviours;
 using Engine.Core.Entities;
 using Engine.Core.Transform;
 using Engine.Rendering.RaylibBackend.Drawables;
@@ -23,6 +24,9 @@ public class SpriteRenderer : IEntityBehaviour
             {
                 var drawable = (TextureDrawable)renderableComponent.Renderable.Drawable;
                 drawable.Texture = e.newValue.Texture;
+                drawable.Color = e.newValue.Color;
+                drawable.Box.Size = e.newValue.Size;
+                drawable.TextureBox.Size = e.newValue.Size;
                 renderableComponent.Renderable.Drawable = drawable;
             });
         });
@@ -31,7 +35,8 @@ public class SpriteRenderer : IEntityBehaviour
             entity.Modify((ref RenderableComponent renderableComponent) =>
             {
                 var drawable = (TextureDrawable)renderableComponent.Renderable.Drawable;
-                drawable.Position = e.newValue.WorldTransform.Position;
+                drawable.Box.Position = e.newValue.WorldTransform.Position;
+                drawable.TextureBox.Position = e.newValue.WorldTransform.Position;
                 drawable.Rotation = e.newValue.WorldTransform.Rotation;
                 drawable.Scale = e.newValue.WorldTransform.Scale;
                 renderableComponent.Renderable.Drawable = drawable;
@@ -57,9 +62,11 @@ public class SpriteRenderer : IEntityBehaviour
             Drawable = new TextureDrawable
             {
                 Texture = spriteComponent.Texture,
-                Position = transformComponent.WorldTransform.Position,
+                Box = new Rectangle { Position = transformComponent.WorldTransform.Position, Size = spriteComponent.Size},
+                TextureBox = new Rectangle { Position = Vector2.Zero, Size = spriteComponent.Size},
                 Rotation = transformComponent.WorldTransform.Rotation,
                 Scale = transformComponent.WorldTransform.Scale,
+                Color = spriteComponent.Color,
             },
         };
         entity.ApplyComponent(renderableComponent);

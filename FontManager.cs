@@ -1,4 +1,6 @@
-﻿using Engine.Rendering.Ui;
+﻿using Engine.Core;
+using Engine.Core.Helper;
+using Engine.Rendering.Ui;
 using Raylib_cs;
 
 namespace Engine.Rendering.RaylibBackend;
@@ -13,12 +15,17 @@ public class FontManager : IFontManager
         font.GlyphPadding = fontDescription.GlyphPadding;
         font.Name = fontDescription.Name;
         font.Filename = fontDescription.Filename;
-        font.Font = Raylib.LoadFont(font.Filename);
+        int[] codepoints = Enumerable.Range(32, 512).ToArray();
+        if (!File.Exists(PathHelper.Normalize(font.Filename)))
+        {
+            throw new GingerException("Font not found: " + font.Filename);
+        }
+        font.Font = Raylib.LoadFontEx(PathHelper.Normalize(font.Filename), (int)font.BaseSize, codepoints, codepoints.Length);
         fonts.Add(font);
     }
 
     public IFont Get(string name)
     {
-        return fonts.FirstOrDefault<IFont>(f => f.Name == name) ?? throw new KeyNotFoundException("Font not found");
+        return fonts.FirstOrDefault<IFont>(f => f.Name == name) ?? null; //throw new KeyNotFoundException("Font not found");
     }
 }

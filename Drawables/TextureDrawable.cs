@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Drawing;
+using System.Numerics;
 using Engine.Rendering.Drawables;
 using Engine.Rendering.Textures;
 
@@ -9,6 +10,8 @@ public struct TextureDrawable(
 {
     public ITexture Texture;
     public float Rotation = 0;
-    public Vector2 Position = default;
+    public Rectangle Box = default;
     public Vector2 Scale = default;
+    public Rectangle TextureBox;
+    public Color Color = Color.White;
 }
