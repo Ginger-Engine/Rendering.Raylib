@@ -39,6 +39,8 @@ public class LabelRenderer : IEntityBehaviour
     {
         if (entity.Parent == null)
             return window.GetSize();
+        if (!entity.HasComponent<RenderableComponent>())
+            return null;
         var rectComponent = entity.GetComponent<RectangleComponent>();
         return EvaluateSize(entity.Parent, rectComponent.Size, window);
     }

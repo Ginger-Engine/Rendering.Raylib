@@ -23,7 +23,7 @@ public class FontManager : IFontManager
             throw new GingerException("Font not found: " + font.Filename);
         }
         font.Font = Raylib.LoadFontEx(PathHelper.Normalize(font.Filename), (int)font.BaseSize, codepoints, codepoints.Length);
-
+        
         if (!Raylib.IsFontValid(font.Font))
         {
             throw new GingerException("Font is not valid: " + font.Filename);
@@ -33,6 +33,8 @@ public class FontManager : IFontManager
         {
             throw new GingerException("Font texture not created: " + font.Filename);
         }
+        
+        Raylib.SetTextureFilter(font.Font.Texture, TextureFilter.Bilinear);
         fonts.Add(font);
     }
 

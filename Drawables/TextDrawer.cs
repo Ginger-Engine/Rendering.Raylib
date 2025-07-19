@@ -40,7 +40,6 @@ public class TextDrawer : AbstractDrawer<TextDrawable>
         };
         
         var origin = new Vector2(dx, dy);
-        
         Raylib.DrawTextPro(
             raylibFontRaw,
             drawable.Text,
