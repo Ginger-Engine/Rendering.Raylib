@@ -11,16 +11,27 @@ public class TextureDrawer : AbstractDrawer<TextureDrawable>
         var texture2D = texture.Texture as RaylibTexture;
         if (texture.Texture is RaylibTexture or null)
         {
+            var source = texture.TextureBox.ToRaylibRect();
+            var pos = texture.Box.Position;
+            var size = texture.Box.Size;
+            var scale = texture.Scale;
+
+            var scaledSize = new Vector2(size.X * scale.X, size.Y * scale.Y);
+
             var dest = new Rectangle
             {
-                Position = new(texture.Box.Position.X + texture.Box.Size.X / 2f,
-                    texture.Box.Position.Y + texture.Box.Size.Y / 2f),
-                Size = texture.Box.Size,
+                Position = new Vector2(
+                    pos.X + size.X / 2f,
+                    pos.Y + size.Y / 2f
+                ),
+                Size = scaledSize
             };
-            var origin = new Vector2(dest.Size.X / 2f, dest.Size.Y / 2f);
+
+            var origin = new Vector2(MathF.Abs(dest.Size.X) / 2f, MathF.Abs(dest.Size.Y) / 2f);
+
             Raylib.DrawTexturePro(
                 texture2D?.Raw ?? default,
-                texture.TextureBox.ToRaylibRect(),
+                source,
                 dest.ToRaylibRect(),
                 origin,
                 texture.Rotation,
