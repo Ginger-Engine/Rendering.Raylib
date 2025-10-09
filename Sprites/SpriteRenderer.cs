@@ -7,20 +7,11 @@ using Engine.Rendering.Windows;
 
 namespace Engine.Rendering.RaylibBackend.Sprites;
 
-public class SpriteRenderer : IEntityBehaviour
+public class SpriteRenderer(RenderQueue renderQueue, IWindow window) : IEntityBehaviour
 {
-    private readonly RenderQueue _renderQueue;
-    private readonly IWindow _window;
-
-    public SpriteRenderer(RenderQueue renderQueue, IWindow window)
-    {
-        _renderQueue = renderQueue;
-        _window = window;
-    }
-
     public void OnStart(Entity entity)
     {
-        InitRenderable(entity, _window);
+        InitRenderable(entity, window);
         entity.SubscribeComponentChange<SpriteComponent>(e =>
         {
             entity.Modify((ref RenderableComponent renderableComponent) =>
@@ -33,7 +24,7 @@ public class SpriteRenderer : IEntityBehaviour
         });
         entity.SubscribeComponentChange<RectangleComponent>(e =>
         {
-            var size = EvaluateSize(entity, e.newValue.Size, _window);
+            var size = EvaluateSize(entity, e.newValue.Size, window);
             entity.Modify((ref RenderableComponent renderableComponent) =>
             {
                 var drawable = (TextureDrawable)renderableComponent.Renderable.Drawable;
@@ -48,14 +39,13 @@ public class SpriteRenderer : IEntityBehaviour
             {
                 var drawable = (TextureDrawable)renderableComponent.Renderable.Drawable;
                 drawable.Box.Position = e.newValue.WorldTransform.Position;
-                drawable.TextureBox.Position = e.newValue.WorldTransform.Position;
                 drawable.Rotation = e.newValue.WorldTransform.Rotation;
                 drawable.Scale = e.newValue.WorldTransform.Scale;
                 renderableComponent.Renderable.Drawable = drawable;
             });
         });
         
-        _renderQueue.Add(entity.GetComponent<RenderableComponent>().Renderable);
+        renderQueue.Add(entity.GetComponent<RenderableComponent>().Renderable);
     }
 
     public void OnUpdate(Entity entity, float dt)
@@ -66,7 +56,10 @@ public class SpriteRenderer : IEntityBehaviour
     {
         if (entity.Parent == null)
             return window.GetSize();
-        var rectComponent = entity.GetComponent<RectangleComponent>();
+        
+        if (!entity.TryGetComponent<RectangleComponent>(out var rectComponent))
+            return window.GetSize();
+        
         return EvaluateSize(entity.Parent, rectComponent.Size, window);
     }
 
